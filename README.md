@@ -10,6 +10,7 @@
         "to": "DiscordのWebhook URL"
     }
 }
+```
 
 # 実行
 1. `git clone https://github.com/NNCT18J/disaster-notify.git`
