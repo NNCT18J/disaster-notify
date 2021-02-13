@@ -47,7 +47,7 @@ const discordPost = (json) => {
 }
 
 const job = () => {
-    request({ url: `https://api.p2pquake.net/v1/human-readable?limit=100`, headers: { 'User-Agent': 'nnct3j-bot' } }, (error, response, body) => {
+    request({ url: `https://api.p2pquake.net/v1/human-readable?limit=3`, headers: { 'User-Agent': 'nnct3j-bot' } }, (error, response, body) => {
         let data = JSON.parse(response.body);
         data.forEach(data => data.time = moment(data.time.split("/").join("-")));
         const dataFromKisho = data.filter(obj => obj.code === 551).filter(obj => obj.earthquake.maxScale >= 30);
