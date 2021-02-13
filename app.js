@@ -52,7 +52,6 @@ const job = () => {
         data.forEach(data => data.time = moment(data.time.split("/").join("-")));
         const dataFromKisho = data.filter(obj => obj.code === 551).filter(obj => obj.earthquake.maxScale >= 30);
         const dataFast = data.filter(obj => obj.code === 5610)
-        console.log()
         if (dataFromKisho.some(obj => obj.time > bufDate)) {
             const data = dataFromKisho.find(obj => obj.time > bufDate);
             //const data = dataFromKisho[1];
@@ -113,14 +112,14 @@ const job = () => {
                 bufDate = moment(data.time);
             }
         } else {
-            console.log("地震はありません");
+            //console.log("地震はありません");
         }
     });
 
 }
 
 cron.schedule("*/2 * * * * *", () => {
-    console.log("job");
+    //console.log("job");
     job();
 });
 
