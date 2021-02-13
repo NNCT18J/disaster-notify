@@ -28,7 +28,7 @@ const tsunami = {
     Warning: "津波予報[種類不明]"
 }
 
-let bufDate = moment(0);
+let bufDate = moment();
 
 const discordPost = (json) => {
     console.log(JSON.stringify(json, null, 2));
@@ -54,8 +54,8 @@ const job = () => {
         const dataFast = data.filter(obj => obj.code === 5610)
         console.log()
         if (dataFromKisho.some(obj => obj.time > bufDate)) {
-            //const data = dataFromKisho.find(obj => obj.time > bufDate);
-            const data = dataFromKisho[1];
+            const data = dataFromKisho.find(obj => obj.time > bufDate);
+            //const data = dataFromKisho[1];
             const isDanger = data.points.some(point => point.addr.indexOf(config.importantArea) !== -1);
             if (discordPost({
                 "username": "緊急地震速報",
