@@ -188,4 +188,8 @@ cron.schedule("*/2 * * * * *", () => {
 (() => {
     console.log("Running...");
     console.log(moment().format("HH:mm"));
+    if(config.importantArea === undefined || config.importantPref === undefined){
+        console.log("設定ファイルが不正です．https://github.com/NNCT18J/disaster-notifyをご確認ください．");
+        process.exit(1);
+    }
 })()
