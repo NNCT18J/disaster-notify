@@ -28,21 +28,32 @@ const tsunami = {
     Warning: "津波予報[種類不明]"
 }
 
-let bufDate = moment();
+let bufDate = moment(0);
 
 const discordPost = (json) => {
+    const post = (url) => {
+        request({ url, method: "POST", json }, (error, response, body) => {
+            if (error !== null) {
+                console.error('error:', error);
+                return (false);
+            }
+            if (response.statusCode !== 204) {
+                console.log(response.statusCode);
+                console.error('error:', body);
+                return (false);
+            }
+        });
+    }
     console.log(JSON.stringify(json, null, 2));
-    request({ url: config.webhook.to, method: "POST", json }, (error, response, body) => {
-        if (error !== null) {
-            console.error('error:', error);
-            return (false);
-        }
-        if (response.statusCode !== 204) {
-            console.log(response.statusCode);
-            console.error('error:', body);
-            return (false);
-        }
-    });
+    if(typeof config.webhook.to === "string"){
+        post(config.webhook.to)
+    }else if(Array.isArray(config.webhook.to)){
+        config.webhook.to.forEach(url => post(url));
+    }else{
+        console.log("config.jsonが不正です！");
+        return false;
+    }
+
     return true;
 }
 
@@ -188,8 +199,9 @@ cron.schedule("*/2 * * * * *", () => {
 (() => {
     console.log("Running...");
     console.log(moment().format("HH:mm"));
-    if(config.importantArea === undefined || config.importantPref === undefined){
+    if(config.importantArea === undefined || config.importantPref === undefined || !((typeof config.webhook.to !== "string") || (Array.isArray(typeof config.webhook.to)))){
         console.log("設定ファイルが不正です．https://github.com/NNCT18J/disaster-notifyをご確認ください．");
+        console.log(Array.isArray(config.webhook.to))
         process.exit(1);
     }
 })()
