@@ -18,9 +18,6 @@
 1. `npm i`
 1. `node app`
 
-
-```
-
 # 通知例
 
 - `importantArea`に設定されていた場合
