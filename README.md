@@ -6,6 +6,7 @@
 ```json
 {
     "importantArea" : "{警告する都市(例: 東京)}",
+    "importantPref" : "{警告する都道府県(例: 東京)}",
     "webhook": {
         "to": "DiscordのWebhook URL"
     }
