@@ -64,8 +64,9 @@ const job = () => {
         const dataFromKisho = data.filter(obj => obj.code === 551).filter(obj => obj.earthquake.maxScale >= 30);
         const dataFast = data.filter(obj => obj.code === 5610);
         if (dataFromKisho.some(obj => obj.time > bufDate)) {
-            const data = dataFromKisho.find(obj => obj.time > bufDate && obj.points.some(point => point.addr.indexOf(config.importantArea) !== -1));
+            const data = dataFromKisho.find(obj => obj.time > bufDate);
             //const data = dataFromKisho[1];
+            console.log(data);
             const isDanger = data.points.some(point => point.addr.indexOf(config.importantArea) !== -1);
             if (discordPost({
                 "username": "緊急地震速報",
