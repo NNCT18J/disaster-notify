@@ -28,7 +28,7 @@ const tsunami = {
     Warning: "津波予報[種類不明]"
 }
 
-let bufDate = moment(0);
+let bufDate = moment();
 
 const discordPost = (json) => {
     console.log(JSON.stringify(json, null, 2));
