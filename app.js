@@ -45,11 +45,11 @@ const discordPost = (json) => {
         });
     }
     console.log(JSON.stringify(json, null, 2));
-    if(typeof config.webhook.to === "string"){
+    if (typeof config.webhook.to === "string") {
         post(config.webhook.to)
-    }else if(Array.isArray(config.webhook.to)){
+    } else if (Array.isArray(config.webhook.to)) {
         config.webhook.to.forEach(url => post(url));
-    }else{
+    } else {
         console.log("config.jsonが不正です！");
         return false;
     }
@@ -106,9 +106,9 @@ const job = () => {
                         }]).concat(data.points.reduce((a, c) => {
                             let t = a.find(v => v.scale == c.scale);
                             if (t !== undefined) {
-                                if(c.addr.indexOf(config.importantArea) !== -1){
+                                if (c.addr.indexOf(config.importantArea) !== -1) {
                                     t.addr.unshift(c.addr);
-                                }else{
+                                } else {
                                     t.addr.push(c.addr);
                                 }
                             } else {
@@ -129,7 +129,7 @@ const job = () => {
                             {
                                 name: "Twitter: 特務機関NERV",
                                 value: "[リンク](https://twitter.com/UN_NERV)"
-                            },{
+                            }, {
                                 name: "気象庁 | 地震情報",
                                 value: "https://www.jma.go.jp/jp/quake/"
                             }
@@ -142,6 +142,11 @@ const job = () => {
         } else if (dataFast.some(obj => obj.time > bufDate && (Object.keys(obj.areas).some(name => name.indexOf(config.importantArea) !== -1)))) {
             console.log("it has");
             const data = dataFast.find(obj => obj.time > bufDate && (Object.keys(obj.areas).some(name => name.indexOf(config.importantArea) !== -1)));
+            if (data.prefs[Object.keys(data.prefs).find(name => name.indexOf(config.importantPref) !== -1)] < 3) {
+                //重要エリア件数3未満
+                bufDate = moment(data.time);
+                return;
+            }
             if (discordPost({
                 "username": "緊急地震速報",
                 "avatar_url": "https://cdn1.iconfinder.com/data/icons/color-bold-style/21/08-512.png",
@@ -175,7 +180,7 @@ const job = () => {
                             {
                                 name: "Twitter: 特務機関NERV",
                                 value: "[リンク](https://twitter.com/UN_NERV)"
-                            },{
+                            }, {
                                 name: "気象庁 | 地震情報",
                                 value: "https://www.jma.go.jp/jp/quake/"
                             }
@@ -200,7 +205,7 @@ cron.schedule("*/2 * * * * *", () => {
 (() => {
     console.log("Running...");
     console.log(moment().format("HH:mm"));
-    if(config.importantArea === undefined || config.importantPref === undefined || !((typeof config.webhook.to === "string") || (Array.isArray(config.webhook.to)))){
+    if (config.importantArea === undefined || config.importantPref === undefined || !((typeof config.webhook.to === "string") || (Array.isArray(config.webhook.to)))) {
         console.log("設定ファイルが不正です．https://github.com/NNCT18J/disaster-notifyをご確認ください．");
         console.log(Array.isArray(config.webhook.to))
         process.exit(1);
