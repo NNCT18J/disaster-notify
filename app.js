@@ -28,7 +28,7 @@ const tsunami = {
     Warning: "津波予報[種類不明]"
 }
 
-let bufDate = moment(0);
+let bufDate = moment();
 
 const discordPost = (json) => {
     const post = (url) => {
@@ -199,7 +199,7 @@ cron.schedule("*/2 * * * * *", () => {
 (() => {
     console.log("Running...");
     console.log(moment().format("HH:mm"));
-    if(config.importantArea === undefined || config.importantPref === undefined || !((typeof config.webhook.to !== "string") || (Array.isArray(typeof config.webhook.to)))){
+    if(config.importantArea === undefined || config.importantPref === undefined || !((typeof config.webhook.to === "string") || (Array.isArray(typeof config.webhook.to)))){
         console.log("設定ファイルが不正です．https://github.com/NNCT18J/disaster-notifyをご確認ください．");
         console.log(Array.isArray(config.webhook.to))
         process.exit(1);
